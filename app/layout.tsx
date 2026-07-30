@@ -1,5 +1,5 @@
-import type { Metadata } from "next
-  import Script from 'next/script'
+import type { Metadata } from "next"
+import Script from 'next/script'
 import { Inter, Playfair_Display } from "next/font/google"
 import { ProductsProvider } from "@/lib/products-context"
 import { CartProvider } from "@/lib/cart-context"
@@ -27,7 +27,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="fr" className={`${inter.variable} ${playfair.variable} scroll-smooth bg-background`}>
+    <html lang="fr" className={${inter.variable} ${playfair.variable} scroll-smooth bg-background}>
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
       </head>
@@ -43,19 +43,19 @@ export default function RootLayout({
             </main>
           </CartProvider>
         </ProductsProvider>
-       {process.env.NODE_ENV === 'production' && <Analytics />}
+        {process.env.NODE_ENV === 'production' && <Analytics />}
 
-          <Script id="remove-v0-badge" strategy="afterInteractive">
-            {`
-              const observer = new MutationObserver(() => {
-                const badge = document.querySelector('[data-v0-badge], a[href*="v0.dev"], a[href*="v0.app"]');
-                if (badge) badge.remove();
-              });
-              observer.observe(document.body, { childList: true, subtree: true });
-            `}
-          </Script>
+        <Script id="remove-v0-badge" strategy="afterInteractive">
+          {`
+            const observer = new MutationObserver(() => {
+              const badge = document.querySelector('[data-v0-badge], a[href*="v0.dev"], a[href*="v0.app"]');
+              if (badge) badge.remove();
+            });
+            observer.observe(document.body, { childList: true, subtree: true });
+          `}
+        </Script>
 
-        </body>
-      </html>
-    )
+      </body>
+    </html>
+  )
 }
