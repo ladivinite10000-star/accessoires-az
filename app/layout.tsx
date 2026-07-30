@@ -1,4 +1,5 @@
-import type { Metadata } from "next"
+import type { Metadata } from "next
+  import Script from 'next/script'
 import { Inter, Playfair_Display } from "next/font/google"
 import { ProductsProvider } from "@/lib/products-context"
 import { CartProvider } from "@/lib/cart-context"
@@ -42,8 +43,19 @@ export default function RootLayout({
             </main>
           </CartProvider>
         </ProductsProvider>
-        {process.env.NODE_ENV === 'production' && <Analytics />}
-      </body>
-    </html>
-  )
+       {process.env.NODE_ENV === 'production' && <Analytics />}
+
+          <Script id="remove-v0-badge" strategy="afterInteractive">
+            {`
+              const observer = new MutationObserver(() => {
+                const badge = document.querySelector('[data-v0-badge], a[href*="v0.dev"], a[href*="v0.app"]');
+                if (badge) badge.remove();
+              });
+              observer.observe(document.body, { childList: true, subtree: true });
+            `}
+          </Script>
+
+        </body>
+      </html>
+    )
 }
