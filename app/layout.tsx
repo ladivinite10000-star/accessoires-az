@@ -27,7 +27,9 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="fr" className={${inter.variable} ${playfair.variable} scroll-smooth bg-background}>
+    <html lang="fr" className={`${inter.variable} ${playfair.variable} scroll-smooth`}>
+
+    
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
       </head>
