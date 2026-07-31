@@ -17,7 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { Check, Truck, Shield, CreditCard, ArrowLeft, AlertCircle, Sparkles } from 'lucide-react'
+import { Check, Truck, Shield, CreditCard, ArrowLeft, AlertCircle, Sparkles, ShoppingBag } from 'lucide-react'
 import Link from 'next/link'
 import { generateOrderId, downloadReceipt, generateWhatsAppLink, type OrderData } from '@/lib/order-utils'
 import { use } from 'react'
@@ -68,6 +68,50 @@ export default function ProductPage({ params }: ProductPageProps) {
   const subtotal = product.price * quantity
   const grandTotal = subtotal + deliveryFee
 
+  // Fonction maison pour créer de superbes feux d'artifice visuels
+  const triggerFireworks = () => {
+    const duration = 2.5 * 1000
+    const animationEnd = Date.now() + duration
+    
+    // Création d'un conteneur temporaire pour les confettis CSS animés
+    const container = document.createElement('div')
+    container.style.position = 'fixed'
+    container.style.inset = '0'
+    container.style.pointerEvents = 'none'
+    container.style.zIndex = '9999'
+    document.body.appendChild(container)
+
+    const colors = ['#f59e0b', '#10b981', '#3b82f6', '#ec4899', '#8b5cf6']
+
+    const interval = setInterval(() => {
+      if (Date.now() > animationEnd) {
+        clearInterval(interval)
+        container.remove()
+        return
+      }
+
+      for (let i = 0; i < 15; i++) {
+        const particle = document.createElement('div')
+        particle.style.position = 'absolute'
+        particle.style.left = ${Math.random() * 100}%
+        particle.style.top = ${Math.random() * 50}%
+        particle.style.width = ${Math.random() * 8 + 4}px
+        particle.style.height = particle.style.width
+        particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)]
+        particle.style.borderRadius = '50%'
+        particle.style.transition = 'all 1s ease-out'
+        container.appendChild(particle)
+
+        setTimeout(() => {
+          particle.style.transform = translate(${(Math.random() - 0.5) * 400}px, ${Math.random() * 400 + 100}px) scale(0)
+          particle.style.opacity = '0'
+        }, 20)
+
+        setTimeout(() => particle.remove(), 1000)
+      }
+    }, 150)
+  }
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
      
@@ -98,6 +142,7 @@ export default function ProductPage({ params }: ProductPageProps) {
 
     setOrderData(newOrderData)
     setOrderComplete(true)
+    triggerFireworks()
   }
 
   const handleDownloadReceipt = () => {
@@ -112,72 +157,79 @@ export default function ProductPage({ params }: ProductPageProps) {
     }
   }
 
+  const scrollToForm = () => {
+    const formElement = document.getElementById('order-form-section')
+    if (formElement) {
+      formElement.scrollIntoView({ behavior: 'smooth' })
+    }
+  }
+
   // Order confirmation view
   if (orderComplete && orderData) {
     return (
       <div className="min-h-screen bg-background">
         <Header />
         <div className="container mx-auto px-4 py-8 max-w-2xl">
-          <div className="bg-card rounded-2xl border border-border p-8 text-center">
-            <div className="w-16 h-16 bg-green-500/10 rounded-full flex items-center justify-center mx-auto mb-6">
-              <svg className="w-8 h-8 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+          <div className="bg-card rounded-2xl border border-border p-8 text-center shadow-xl">
+            <div className="w-20 h-20 bg-green-500/10 rounded-full flex items-center justify-center mx-auto mb-6 animate-bounce">
+              <svg className="w-10 h-10 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
               </svg>
             </div>
 
-            <h1 className="font-serif text-2xl font-bold text-foreground mb-2">
-              Commande enregistree !
+            <h1 className="font-serif text-3xl font-bold text-foreground mb-2">
+              Félicitations ! Commande validée 🎉
             </h1>
-            <p className="text-muted-foreground mb-6">
-              Numero de commande : <span className="text-primary font-bold">{orderData.orderId}</span>
+            <p className="text-muted-foreground mb-6 text-base">
+              Numéro de commande : <span className="text-primary font-bold text-lg">{orderData.orderId}</span>
             </p>
 
-            {/* Order Summary */}
-            <div className="bg-secondary/50 rounded-xl p-4 mb-6 text-left">
-              <h3 className="font-semibold text-foreground mb-3">Recapitulatif</h3>
+            {/* Order Summary Ultra Lisible */}
+            <div className="bg-secondary/60 rounded-2xl p-6 mb-6 text-left border border-border">
+              <h3 className="font-semibold text-foreground text-base mb-4 border-b border-border pb-2">Détails de votre facture</h3>
               {orderData.items.map((item, index) => (
-                <div key={index} className="flex justify-between text-sm mb-2">
-                  <span className="text-muted-foreground">{item.name} x{item.quantity}</span>
-                  <span className="text-foreground">{(item.price * item.quantity).toLocaleString('fr-FR')} FCFA</span>
+                <div key={index} className="flex justify-between items-center text-sm md:text-base mb-3">
+                  <span className="text-foreground font-medium">{item.name} <span className="text-muted-foreground">x{item.quantity}</span></span>
+                  <span className="text-foreground font-bold">{(item.price * item.quantity).toLocaleString('fr-FR')} FCFA</span>
                 </div>
               ))}
-              <div className="border-t border-border pt-2 mt-2">
-                <div className="flex justify-between text-sm mb-1">
-                  <span className="text-muted-foreground">Sous-total</span>
-                  <span className="text-foreground">{orderData.subtotal.toLocaleString('fr-FR')} FCFA</span>
+              <div className="border-t border-border pt-3 mt-3 space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span className="text-muted-foreground">Sous-total des articles</span>
+                  <span className="text-foreground font-semibold">{orderData.subtotal.toLocaleString('fr-FR')} FCFA</span>
                 </div>
-                <div className="flex justify-between text-sm mb-1">
-                  <span className="text-muted-foreground">Livraison</span>
-                  <span className="text-foreground">{orderData.deliveryFee.toLocaleString('fr-FR')} FCFA</span>
+                <div className="flex justify-between text-sm">
+                  <span className="text-muted-foreground">Frais de livraison ({orderData.deliveryZone})</span>
+                  <span className="text-foreground font-semibold">{orderData.deliveryFee.toLocaleString('fr-FR')} FCFA</span>
                 </div>
-                <div className="flex justify-between font-bold text-lg mt-2">
-                  <span className="text-foreground">Total</span>
-                  <span className="text-primary">{orderData.total.toLocaleString('fr-FR')} FCFA</span>
+                <div className="border-t border-border/60 pt-3 mt-2 flex justify-between items-center">
+                  <span className="text-foreground font-bold text-lg">Total à payer</span>
+                  <span className="text-primary font-extrabold text-xl">{orderData.total.toLocaleString('fr-FR')} FCFA</span>
                 </div>
               </div>
             </div>
 
-            <p className="text-sm text-muted-foreground mb-4">
-              Mode de paiement : <span className="text-foreground font-medium">Paiement a la livraison</span>
-            </p>
+            <div className="bg-primary/5 border border-primary/20 rounded-xl p-4 mb-6 text-sm text-foreground">
+              Mode de paiement : <span className="font-bold">Paiement en espèces à la livraison</span> 🚚
+            </div>
 
             <div className="space-y-3">
               <Button 
                 onClick={handleDownloadReceipt}
                 variant="outline"
-                className="w-full border-primary/30 hover:bg-primary/10"
+                className="w-full border-primary/40 hover:bg-primary/10 py-6 text-base font-semibold rounded-xl"
               >
-                Telecharger mon recu
+                📥 Télécharger mon reçu officiel
               </Button>
               <Button 
                 onClick={handleWhatsAppConfirm}
-                className="w-full bg-green-600 hover:bg-green-700 h-auto min-h-[48px] py-3 px-4 whitespace-normal text-center leading-tight"
+                className="w-full bg-green-600 hover:bg-green-700 h-auto min-h-[52px] py-3 px-4 whitespace-normal text-center leading-tight text-white font-bold text-base rounded-xl shadow-lg"
               >
-                Confirmer et valider votre commande sur WhatsApp
+                💬 Confirmer et valider votre commande sur WhatsApp
               </Button>
-              <Link href="/" className="block">
-                <Button variant="ghost" className="w-full">
-                  Retour a la boutique
+              <Link href="/" className="block pt-2">
+                <Button variant="ghost" className="w-full text-muted-foreground">
+                  Retour à la boutique
                 </Button>
               </Link>
             </div>
@@ -188,27 +240,25 @@ export default function ProductPage({ params }: ProductPageProps) {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background pb-24 md:pb-12">
       <Header />
       <PurchaseNotification />
 
       <main className="container mx-auto px-4 py-8">
-        <Link href="/" className="inline-flex items-center text-muted-foreground hover:text-foreground mb-6">
+        <Link href="/" className="inline-flex items-center text-muted-foreground hover:text-foreground mb-6 text-sm font-medium">
           <ArrowLeft className="w-4 h-4 mr-2" />
-          Retour a la boutique
+          Retour à la boutique
         </Link>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
-          {/* Image Carousel */}
           <div>
             <ImageCarousel images={product.images} productName={product.name} />
           </div>
 
-          {/* Product Info */}
           <div className="flex flex-col">
             {product.category && (
               <div className="mb-4">
-                <span className="text-primary text-sm font-medium">{product.category}</span>
+                <span className="text-primary text-xs uppercase tracking-wider font-bold bg-primary/10 px-3 py-1 rounded-full">{product.category}</span>
               </div>
             )}
 
@@ -217,23 +267,21 @@ export default function ProductPage({ params }: ProductPageProps) {
             </h1>
 
             <div className="flex items-center gap-3 mb-6">
-              <p className="text-primary text-3xl font-bold">
+              <p className="text-primary text-3xl font-extrabold">
                 {product.price.toLocaleString('fr-FR')} FCFA
               </p>
               {product.oldPrice && (
-                <p className="text-muted-foreground line-through text-xl">
+                <p className="text-muted-foreground line-through text-lg font-medium">
                   {product.oldPrice.toLocaleString('fr-FR')} FCFA
                 </p>
               )}
             </div>
 
-            <p className="text-muted-foreground mb-6 leading-relaxed">
+            <p className="text-muted-foreground mb-6 leading-relaxed text-base">
               {product.description}
             </p>
 
-            {/* SCHEMA PERSUASIF : PROBLÈME -> SOLUTION -> CARACTÉRISTIQUES */}
             <div className="space-y-4 mb-6">
-              {/* Le Problème */}
               <div className="bg-destructive/10 border border-destructive/20 rounded-2xl p-4">
                 <div className="flex items-start gap-3">
                   <AlertCircle className="w-5 h-5 text-destructive flex-shrink-0 mt-0.5" />
@@ -246,7 +294,6 @@ export default function ProductPage({ params }: ProductPageProps) {
                 </div>
               </div>
 
-              {/* La Solution */}
               <div className="bg-primary/10 border border-primary/20 rounded-2xl p-4">
                 <div className="flex items-start gap-3">
                   <Sparkles className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
@@ -260,8 +307,7 @@ export default function ProductPage({ params }: ProductPageProps) {
               </div>
             </div>
 
-            {/* Features (Caractéristiques techniques) */}
-            <div className="mb-6 bg-card rounded-2xl border border-border p-6">
+            <div className="mb-6 bg-card rounded-2xl border border-border p-6 shadow-sm">
               <h3 className="font-serif text-lg font-bold text-foreground mb-3">
                 Caractéristiques techniques
               </h3>
@@ -275,9 +321,8 @@ export default function ProductPage({ params }: ProductPageProps) {
               </ul>
             </div>
 
-            {/* Story */}
             {product.story && (
-              <div className="bg-card rounded-2xl border border-border p-6 mb-6">
+              <div className="bg-card rounded-2xl border border-border p-6 mb-6 shadow-sm">
                 <h3 className="font-serif text-lg font-bold text-foreground mb-3">
                   L&apos;histoire du produit
                 </h3>
@@ -287,87 +332,81 @@ export default function ProductPage({ params }: ProductPageProps) {
               </div>
             )}
 
-            {/* Trust badges */}
             <div className="flex flex-wrap gap-4 mb-8">
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <div className="flex items-center gap-2 text-sm text-muted-foreground font-medium">
                 <Truck className="w-4 h-4 text-primary" />
-                <span>Livraison rapide</span>
+                <span>Livraison rapide 24/48h</span>
               </div>
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <div className="flex items-center gap-2 text-sm text-muted-foreground font-medium">
                 <Shield className="w-4 h-4 text-primary" />
-                <span>Qualite garantie</span>
+                <span>Qualité garantie</span>
               </div>
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <div className="flex items-center gap-2 text-sm text-muted-foreground font-medium">
                 <CreditCard className="w-4 h-4 text-primary" />
-                <span>Paiement a la livraison</span>
+                <span>Paiement à la livraison</span>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Customer Reviews specifiques au produit */}
         {product.reviews && product.reviews.length > 0 && (
           <div className="mt-12 mb-12">
             <CustomerReviews reviews={product.reviews} />
           </div>
         )}
 
-        {/* Order Form Section */}
-        <div className="max-w-2xl mx-auto">
-          <div className="bg-card rounded-2xl border border-border p-6 md:p-8">
-            <h2 className="font-serif text-2xl font-bold text-foreground mb-2 text-center">
-              Commander ce produit
+        <div id="order-form-section" className="max-w-2xl mx-auto pt-6">
+          <div className="bg-card rounded-3xl border border-border p-6 md:p-8 shadow-xl">
+            <h2 className="font-serif text-2xl md:text-3xl font-bold text-foreground mb-2 text-center">
+              Commander maintenant
             </h2>
-            <p className="text-muted-foreground text-center mb-6">
-              Remplissez le formulaire ci-dessous pour passer votre commande
+            <p className="text-muted-foreground text-center mb-6 text-sm md:text-base">
+              Remplissez le formulaire ci-dessous. Aucun paiement en ligne requis.
             </p>
 
-            {/* Quantity Selector */}
-            <div className="bg-secondary/50 rounded-xl p-4 mb-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="font-semibold text-foreground">{product.name}</p>
-                  <p className="text-primary font-bold">{product.price.toLocaleString('fr-FR')} FCFA</p>
-                </div>
-                <div className="flex items-center gap-3">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="icon"
-                    className="w-8 h-8"
-                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  >
-                    -
-                  </Button>
-                  <span className="w-8 text-center text-foreground font-semibold">{quantity}</span>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="icon"
-                    className="w-8 h-8"
-                    onClick={() => setQuantity(quantity + 1)}
-                  >
-                    +
-                  </Button>
-                </div>
+            <div className="bg-secondary/60 rounded-2xl p-4 mb-6 flex items-center justify-between border border-border">
+              <div>
+                <p className="font-semibold text-foreground text-sm md:text-base">{product.name}</p>
+                <p className="text-primary font-extrabold text-base">{product.price.toLocaleString('fr-FR')} FCFA</p>
+              </div>
+              <div className="flex items-center gap-3">
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="icon"
+                  className="w-9 h-9 rounded-xl"
+                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                >
+                  -
+                </Button>
+                <span className="w-8 text-center text-foreground font-bold text-lg">{quantity}</span>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="icon"
+                  className="w-9 h-9 rounded-xl"
+                  onClick={() => setQuantity(quantity + 1)}
+                >
+                  +
+                </Button>
               </div>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <Label htmlFor="name">Nom complet *</Label>
+                <Label htmlFor="name" className="text-foreground font-semibold">Nom complet *</Label>
                 <Input
                   id="name"
                   value={formData.name}
                   onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                  placeholder="Votre nom complet"
+                  placeholder="Ex: Kouassi Jean"
                   required
-                  className="mt-1"
+                  className="mt-1.5 h-12 rounded-xl text-base"
                 />
               </div>
 
               <div>
-                <Label htmlFor="phone">Telephone principal *</Label>
+                <Label htmlFor="phone" className="text-foreground font-semibold">Téléphone principal (WhatsApp/Appel) *</Label>
                 <Input
                   id="phone"
                   type="tel"
@@ -375,31 +414,31 @@ export default function ProductPage({ params }: ProductPageProps) {
                   onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
                   placeholder="Ex: 07 XX XX XX XX"
                   required
-                  className="mt-1"
+                  className="mt-1.5 h-12 rounded-xl text-base"
                 />
               </div>
 
               <div>
-                <Label htmlFor="phoneSecondary">Telephone secondaire (optionnel)</Label>
+                <Label htmlFor="phoneSecondary" className="text-foreground font-semibold">Téléphone secondaire (Optionnel)</Label>
                 <Input
                   id="phoneSecondary"
                   type="tel"
                   value={formData.phoneSecondary}
                   onChange={(e) => setFormData(prev => ({ ...prev, phoneSecondary: e.target.value }))}
                   placeholder="Ex: 05 XX XX XX XX"
-                  className="mt-1"
+                  className="mt-1.5 h-12 rounded-xl text-base"
                 />
               </div>
 
               <div>
-                <Label htmlFor="deliveryZone">Zone de livraison *</Label>
+                <Label htmlFor="deliveryZone" className="text-foreground font-semibold">Commune / Zone de livraison *</Label>
                 <Select
                   value={formData.deliveryZone}
                   onValueChange={(value) => setFormData(prev => ({ ...prev, deliveryZone: value }))}
                   required
                 >
-                  <SelectTrigger className="mt-1">
-                    <SelectValue placeholder="Selectionnez votre zone" />
+                  <SelectTrigger className="mt-1.5 h-12 rounded-xl text-base">
+                    <SelectValue placeholder="Sélectionnez votre zone" />
                   </SelectTrigger>
                   <SelectContent>
                     {DELIVERY_ZONES.map((zone) => (
@@ -411,50 +450,59 @@ export default function ProductPage({ params }: ProductPageProps) {
                 </Select>
               </div>
 
-              {/* Payment Method - Cash on Delivery */}
-              <div className="bg-primary/10 rounded-xl p-4 border border-primary/20">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-primary/20 rounded-full flex items-center justify-center">
-                    <CreditCard className="w-5 h-5 text-primary" />
-                  </div>
-                  <div>
-                    <p className="font-semibold text-foreground">Paiement a la livraison</p>
-                    <p className="text-sm text-muted-foreground">Payez en especes a la reception de votre commande</p>
-                  </div>
+              <div className="bg-primary/10 rounded-2xl p-4 border border-primary/20 flex items-center gap-3">
+                <div className="w-10 h-10 bg-primary/20 rounded-full flex items-center justify-center flex-shrink-0">
+                  <CreditCard className="w-5 h-5 text-primary" />
+                </div>
+                <div>
+                  <p className="font-bold text-foreground text-sm">Paiement à la livraison</p>
+                  <p className="text-xs text-muted-foreground">Vous payez en espèces une fois le colis reçu entre vos mains.</p>
                 </div>
               </div>
 
-              {/* Order Summary */}
-              <div className="bg-secondary/50 rounded-xl p-4">
-                <div className="flex justify-between mb-2">
+              <div className="bg-secondary/60 rounded-2xl p-4 border border-border space-y-2">
+                <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Sous-total ({quantity} article{quantity > 1 ? 's' : ''})</span>
-                  <span className="text-foreground">{subtotal.toLocaleString('fr-FR')} FCFA</span>
+                  <span className="text-foreground font-semibold">{subtotal.toLocaleString('fr-FR')} FCFA</span>
                 </div>
-                <div className="flex justify-between mb-2">
-                  <span className="text-muted-foreground">Livraison</span>
-                  <span className="text-foreground">
-                    {deliveryFee > 0 ? ${deliveryFee.toLocaleString('fr-FR')} FCFA : 'Selectionnez une zone'}
+                <div className="flex justify-between text-sm">
+                  <span className="text-muted-foreground">Frais de livraison</span>
+                  <span className="text-foreground font-semibold">
+                    {deliveryFee > 0 ? ${deliveryFee.toLocaleString('fr-FR')} FCFA : 'À sélectionner'}
                   </span>
                 </div>
-                <div className="border-t border-border pt-2 mt-2">
-                  <div className="flex justify-between font-bold text-lg">
-                    <span className="text-foreground">Total a payer</span>
-                    <span className="text-primary">{grandTotal.toLocaleString('fr-FR')} FCFA</span>
-                  </div>
+                <div className="border-t border-border pt-2 mt-1 flex justify-between items-center">
+                  <span className="text-foreground font-bold text-base">Total à payer</span>
+                  <span className="text-primary font-extrabold text-xl">{grandTotal.toLocaleString('fr-FR')} FCFA</span>
                 </div>
               </div>
 
               <Button 
                 type="submit" 
-                className="w-full bg-primary hover:bg-primary/90 py-6 text-lg font-semibold rounded-2xl"
+                className="w-full bg-primary hover:bg-primary/90 h-14 text-lg font-bold rounded-2xl shadow-lg transition-all transform active:scale-95"
                 disabled={!formData.name || !formData.phone || !formData.deliveryZone}
               >
-                Valider ma commande
+                🎉 Valider ma commande
               </Button>
             </form>
           </div>
         </div>
       </main>
+
+      {/* Sticky CTA Mobile Bar */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur-md border-t border-border p-4 z-50 flex items-center justify-between shadow-2xl">
+        <div>
+          <p className="text-xs text-muted-foreground font-medium">Prix total</p>
+          <p className="text-primary font-extrabold text-lg">{product.price.toLocaleString('fr-FR')} FCFA</p>
+        </div>
+        <Button 
+          onClick={scrollToForm}
+          className="bg-primary hover:bg-primary/90 text-white font-bold px-6 py-3 rounded-xl shadow-md flex items-center gap-2"
+        >
+          <ShoppingBag className="w-4 h-4" />
+          Commander vite
+        </Button>
+      </div>
     </div>
   )
 }
