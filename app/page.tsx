@@ -247,30 +247,85 @@ export default function HomePage() {
               Tout ce que vous devez savoir sur nos services et livraisons.
             </p>
           </div>
-
-          <div className="space-y-4">
-            {faqs.map((faq, index) => (
-              <div 
-                key={index}
-                className="border border-border rounded-2xl overflow-hidden bg-card/40 transition-all"
-              >
-                <button
-                  onClick={() => setOpenFaq(openFaq === index ? null : index)}
-                  className="w-full flex items-center justify-between p-5 text-left font-semibold text-foreground hover:text-primary transition-colors"
-                >
-                  <span>{faq.question}</span>
-                  <ChevronDown className={w-5 h-5 text-primary transition-transform duration-300 ${openFaq === index ? 'rotate-180' : ''}} />
-                </button>
-                {openFaq === index && (
-                  <div className="px-5 pb-5 text-muted-foreground text-sm leading-relaxed border-t border-border/50 pt-3">
-                    {faq.answer}
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
+<div className="space-y-4">
+  {faq.map((item, index) => (
+    <div
+      key={index}
+      className="border border-border rounded-2xl overflow-hidden bg-card transition-all"
+    >
+      <button
+        onClick={() => setOpenFaq(openFaq === index ? null : index)}
+        className="w-full flex items-center justify-between p-5 text-left font-medium"
+      >
+        <span>{item.question}</span>
+        <ChevronDown className="w-5 h-5 text-primary transition-transform duration-200" />
+      </button>
+      {openFaq === index && (
+        <div className="px-5 pb-5 text-muted-foreground text-sm leading-relaxed border-t border-border">
+          {item.answer}
         </div>
-      </section>
+      )}
+    </div>
+  ))}
+</div>
+ <div className="space-y-4">
+  {faq.map((item, index) => (
+    <div
+      key={index}
+      className="border border-border rounded-2xl overflow-hidden bg-card transition-all"
+    >
+      <button
+        onClick={() => setOpenFaq(openFaq === index ? null : index)}
+        className="w-full flex items-center justify-between p-5 text-left font-medium"
+      >
+        <span>{item.question}</span>
+        <ChevronDown className="w-5 h-5 text-primary transition-transform duration-200" />
+      </button>
+      {openFaq === index && (
+        <div className="px-5 pb-5 text-muted-foreground text-sm leading-relaxed border-t border-border">
+          {item.answer}
+        </div>
+      )}
+    </div>
+  ))}
+</div>
+      key={index}
+      className="border border-border rounded-2xl overflow-hidden bg-card transition-all"
+    >
+      <button
+        onClick={() => setOpenFaq(openFaq === index ? null : index)}
+        className="w-full flex items-center justify-between p-5 text-left font-medium"
+      >
+        <span>{item.question}</span>
+        <ChevronDown className="w-5 h-5 text-primary transition-transform duration-200" />
+      </button>
+      {openFaq === index && (
+        <div className="px-5 pb-5 text-muted-foreground text-sm leading-relaxed border-t border-border">
+          {item.answer}
+        </div>
+      )}
+    </div>
+  ))}
+</div>
+    <div
+      key={index}
+      className="border border-border rounded-2xl overflow-hidden bg-card transition-all"
+    >
+      <button
+        onClick={() => setOpenFaq(openFaq === index ? null : index)}
+        className="w-full flex items-center justify-between p-5 text-left font-medium"
+      >
+        <span>{faq.question}</span>
+        <ChevronDown className="w-5 h-5 text-primary transition-transform duration-200" />
+      </button>
+      {openFaq === index && (
+        <div className="px-5 pb-5 text-muted-foreground text-sm leading-relaxed border-t border-border">
+          {faq.answer}
+        </div>
+      )}
+    </div>
+  ))}
+</div>
 
       {/* Footer */}
       <footer className="py-12 border-t border-border">
