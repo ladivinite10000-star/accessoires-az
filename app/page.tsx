@@ -5,23 +5,56 @@ import { VisitorCount } from '@/components/visitor-count'
 import { ProductCard } from '@/components/product-card'
 import { PurchaseNotification } from '@/components/purchase-notification'
 import { useProducts } from '@/lib/products-context'
-import { Sparkles } from 'lucide-react'
+import { Sparkles, MessageCircle, ChevronDown } from 'lucide-react'
+import { useState } from 'react'
 
 export default function HomePage() {
   const { products } = useProducts()
+  const [openFaq, setOpenFaq] = useState<number | null>(null)
+
+  const faqs = [
+    {
+      question: "Quels sont les délais de livraison ?",
+      answer: "Nous expédions rapidement vos commandes. Les délais de livraison varient généralement entre 24 et 48 heures selon votre localisation exacte."
+    },
+    {
+      question: "Comment s'effectue le paiement ?",
+      answer: "Le paiement se fait en cash (espèces) directement à la réception de votre commande. Vous ne payez qu'une fois le colis entre vos mains."
+    },
+    {
+      question: "Puis-je vérifier mon colis avant de payer ?",
+      answer: "Absolument ! Nous vous offrons la possibilité de vérifier le contenu de votre colis à la livraison pour vous assurer de la conformité de votre article en toute sérénité."
+    },
+    {
+      question: "Comment fonctionne le service après-vente (SAV) ?",
+      answer: "Notre équipe reste entièrement à votre disposition via notre support WhatsApp direct pour répondre à toutes vos questions, vous assister ou gérer toute demande relative à votre produit."
+    }
+  ]
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background relative">
       <Header />
       <PurchaseNotification />
 
+      {/* Bouton WhatsApp Flottant et Fixe en bas à droite */}
+      <a
+        href="https://wa.me/2250503635887?text=Bonjour,%20je%20souhaite%20avoir%20plus%20d'informations%20sur%20vos%20produits."
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Discuter sur WhatsApp"
+        className="fixed bottom-6 right-6 z-50 bg-[#25D366] text-white p-4 rounded-full shadow-2xl hover:scale-110 transition-all duration-300 flex items-center justify-center group"
+      >
+        <MessageCircle className="w-7 h-7 fill-current" />
+        <span className="max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-xs transition-all duration-300 ease-in-out text-sm font-semibold pl-0 group-hover:pl-2">
+          Discuter
+        </span>
+      </a>
+
       {/* Hero Section */}
       <section className="relative py-16 md:py-24 overflow-hidden">
-        {/* Background decoration */}
         <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent" />
         
         <div className="container mx-auto px-4 relative">
-          {/* Visitor Count */}
           <div className="flex justify-center mb-8">
             <VisitorCount />
           </div>
@@ -34,12 +67,12 @@ export default function HomePage() {
 
             <h1 className="font-serif text-4xl md:text-6xl font-bold text-foreground mb-6 text-balance">
               L&apos;Art des{' '}
-              <span className="text-primary">Accessoires</span>
+              <span className="text-primary underline decoration-primary/30 underline-offset-8">Accessoires</span>
               {' '}AZ
             </h1>
 
             <p className="text-lg md:text-xl text-muted-foreground mb-8 text-pretty">
-              LE DETAIL QUI CHANGE TOUT, LE PRODUIT QUI VOUS SIMPLIFIE LA VIE
+              LE DÉTAIL QUI CHANGE TOUT, LE PRODUIT QUI VOUS SIMPLIFIE LA VIE
             </p>
 
             <a 
@@ -60,7 +93,7 @@ export default function HomePage() {
               Nos <span className="text-primary">Produits</span>
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Chaque article est soigneusement selectionne pour vous offrir le meilleur en termes de qualite et de style.
+              Chaque article est soigneusement sélectionné pour vous offrir le meilleur en termes de qualité et de style.
             </p>
           </div>
 
@@ -88,9 +121,9 @@ export default function HomePage() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
               </div>
-              <h3 className="font-serif text-lg font-bold text-foreground mb-2">Qualite Premium</h3>
+              <h3 className="font-serif text-lg font-bold text-foreground mb-2">Qualité Premium</h3>
               <p className="text-muted-foreground text-sm">
-                Produits selectionnes avec soin pour une qualite exceptionnelle.
+                Produits sélectionnés avec soin pour une qualité exceptionnelle.
               </p>
             </div>
 
@@ -102,7 +135,7 @@ export default function HomePage() {
               </div>
               <h3 className="font-serif text-lg font-bold text-foreground mb-2">Livraison Rapide</h3>
               <p className="text-muted-foreground text-sm">
-                Expedition dans tout le pays avec suivi de commande.
+                Expédition dans tout le pays avec suivi de commande.
               </p>
             </div>
 
@@ -121,19 +154,54 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* FAQ Section en Accordéon */}
+      <section className="py-16 md:py-24 bg-background">
+        <div className="container mx-auto px-4 max-w-3xl">
+          <div className="text-center mb-12">
+            <h2 className="font-serif text-3xl md:text-4xl font-bold text-foreground mb-4">
+              Questions <span className="text-primary">Fréquentes</span>
+            </h2>
+            <p className="text-muted-foreground">
+              Tout ce que vous devez savoir sur nos services et livraisons.
+            </p>
+          </div>
+
+          <div className="space-y-4">
+            {faqs.map((faq, index) => (
+              <div 
+                key={index}
+                className="border border-border rounded-2xl overflow-hidden bg-card/40 transition-all"
+              >
+                <button
+                  onClick={() => setOpenFaq(openFaq === index ? null : index)}
+                  className="w-full flex items-center justify-between p-5 text-left font-semibold text-foreground hover:text-primary transition-colors"
+                >
+                  <span>{faq.question}</span>
+                  <ChevronDown className={w-5 h-5 text-primary transition-transform duration-300 ${openFaq === index ? 'rotate-180' : ''}} />
+                </button>
+                {openFaq === index && (
+                  <div className="px-5 pb-5 text-muted-foreground text-sm leading-relaxed border-t border-border/50 pt-3">
+                    {faq.answer}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Footer */}
       <footer className="py-12 border-t border-border">
         <div className="container mx-auto px-4 text-center">
           <div className="flex items-center justify-center gap-2 mb-4">
-            <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
-              <span className="text-primary-foreground font-serif font-bold text-sm">AZ</span>
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-primary to-primary/70 flex items-center justify-center shadow-md">
+              <span className="text-primary-foreground font-serif font-bold text-sm tracking-widest">AZ</span>
             </div>
             <span className="font-serif text-lg font-bold text-foreground">
               L&apos;Art des Accessoires AZ
             </span>
           </div>
           
-          {/* Assistant Client */}
           <div className="mb-4">
             <a 
               href="https://wa.me/2250503635887"
@@ -149,7 +217,7 @@ export default function HomePage() {
           </div>
           
           <p className="text-muted-foreground text-sm">
-            2026 L&apos;Art des Accessoires AZ. Tous droits reserves.
+            2026 L&apos;Art des Accessoires AZ. Tous droits réservés.
           </p>
         </div>
       </footer>
