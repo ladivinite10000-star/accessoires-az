@@ -1,4 +1,27 @@
-"use client"
+[01:09, 31/07/2026] Abdallito: "use client"
+
+import { Header } from '@/components/header'
+import { VisitorCount } from '@/components/visitor-count'
+import { ProductCard } from '@/components/product-card'
+import { PurchaseNotification } from '@/components/purchase-notification'
+import { useProducts } from '@/lib/products-context'
+import { Sparkles } from 'lucide-react'
+
+export default function HomePage() {
+  const { products } = useProducts()
+
+  return (
+    <div className="min-h-screen bg-background">
+      <Header />
+      <PurchaseNotification />
+
+      {/* Hero Section */}
+      <section className="relative py-16 md:py-24 overflow-hidden">
+        {/* Background decoration */}
+        <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent" />
+        
+        <…
+[01:12, 31/07/2026] Abdallito: "use client"
 
 import { Header } from '@/components/header'
 import { VisitorCount } from '@/components/visitor-count'
