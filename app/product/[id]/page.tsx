@@ -270,12 +270,11 @@ export default function ProductPage({ params }: ProductPageProps) {
               <p className="text-primary text-3xl font-extrabold">
                 {product.price.toLocaleString('fr-FR')} FCFA
               </p>
-              {product.oldPrice && (
-                <p className="text-muted-foreground line-through text-lg font-medium">
-                  {product.oldPrice.toLocaleString('fr-FR')} FCFA
-                </p>
-              )}
-            </div>
+      {product.oldPrice && (
+  <p className="text-muted-foreground line-through text-lg font-medium">
+    {product.oldPrice.toLocaleString('fr-FR')} FCFA
+  </p>
+)}
 
             <p className="text-muted-foreground mb-6 leading-relaxed text-base">
               {product.description}
