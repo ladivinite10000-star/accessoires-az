@@ -90,18 +90,18 @@ export default function ProductPage({ params }: ProductPageProps) {
         return
       }
 
-      for (let i = 0; i < 15; i++) {
-        const particle = document.createElement('div')
-        particle.style.position = 'absolute'
-         particle.style.left = ${Math.random() * 100}%;
-      particle.style.top = ${Math.random() * 50}%;
-       particle.style.width = ${Math.random() * 8 + 4}px;
-       particle.style.height = particle.style.width;
-        particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)]
-        particle.style.borderRadius = '50%'
-        particle.style.transition = 'all 1s ease-out'
-        container.appendChild(particle)
-
+    for (let i = 0; i < 15; i++) {
+  const particle = document.createElement('div')
+  particle.style.position = 'absolute'
+  particle.style.left = ${Math.random() * 100}%;
+  particle.style.top = ${Math.random() * 50}%;
+  particle.style.width = ${Math.random() * 8 + 4}px;
+  particle.style.height = particle.style.width;
+  particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)]
+  particle.style.borderRadius = '50%'
+  particle.style.transition = 'all 1s ease-out'
+  container.appendChild(particle)
+}
         setTimeout(() => {
           
      particle.style.transform = translate(${ (Math.random() - 0.5) * 400 }px, ${ Math.random() * 400 + 100 }px) scale(0)`;
