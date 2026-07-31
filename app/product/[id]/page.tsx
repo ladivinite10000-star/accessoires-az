@@ -93,7 +93,7 @@ export default function ProductPage({ params }: ProductPageProps) {
       for (let i = 0; i < 15; i++) {
         const particle = document.createElement('div')
         particle.style.position = 'absolute'
-        particle.style.left = ${Math.random() * 100}%;
+         particle.style.left = ${Math.random() * 100}%;
       particle.style.top = ${Math.random() * 50}%;
        particle.style.width = ${Math.random() * 8 + 4}px;
        particle.style.height = particle.style.width;
