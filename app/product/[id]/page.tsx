@@ -17,7 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { Check, Truck, Shield, CreditCard, ArrowLeft } from 'lucide-react'
+import { Check, Truck, Shield, CreditCard, ArrowLeft, AlertCircle, Sparkles } from 'lucide-react'
 import Link from 'next/link'
 import { generateOrderId, downloadReceipt, generateWhatsAppLink, type OrderData } from '@/lib/order-utils'
 import { use } from 'react'
@@ -48,7 +48,7 @@ export default function ProductPage({ params }: ProductPageProps) {
   const { id } = use(params)
   const { products } = useProducts()
   const product = products.find(p => p.id === id)
-  
+   
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -70,7 +70,7 @@ export default function ProductPage({ params }: ProductPageProps) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    
+     
     const orderId = generateOrderId()
     const newOrderData: OrderData = {
       orderId,
@@ -161,7 +161,6 @@ export default function ProductPage({ params }: ProductPageProps) {
               Mode de paiement : <span className="text-foreground font-medium">Paiement a la livraison</span>
             </p>
 
-            {/* Action Buttons - Bouton WhatsApp avec retour a la ligne */}
             <div className="space-y-3">
               <Button 
                 onClick={handleDownloadReceipt}
@@ -232,12 +231,43 @@ export default function ProductPage({ params }: ProductPageProps) {
               {product.description}
             </p>
 
-            {/* Features */}
-            <div className="mb-6">
-              <h3 className="font-semibold text-foreground mb-3">Caracteristiques :</h3>
+            {/* SCHEMA PERSUASIF : PROBLÈME -> SOLUTION -> CARACTÉRISTIQUES */}
+            <div className="space-y-4 mb-6">
+              {/* Le Problème */}
+              <div className="bg-destructive/10 border border-destructive/20 rounded-2xl p-4">
+                <div className="flex items-start gap-3">
+                  <AlertCircle className="w-5 h-5 text-destructive flex-shrink-0 mt-0.5" />
+                  <div>
+                    <h3 className="font-semibold text-foreground text-sm mb-1">Le problème du quotidien</h3>
+                    <p className="text-muted-foreground text-sm">
+                      Fatigué(e) des solutions inefficaces, des pertes de temps ou du manque de fiabilité ? Il est temps d&apos;y remédier durablement.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* La Solution */}
+              <div className="bg-primary/10 border border-primary/20 rounded-2xl p-4">
+                <div className="flex items-start gap-3">
+                  <Sparkles className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                  <div>
+                    <h3 className="font-semibold text-foreground text-sm mb-1">Notre solution idéale</h3>
+                    <p className="text-muted-foreground text-sm">
+                      {product.name} a été spécialement conçu pour vous simplifier la vie, vous garantir un confort maximal et un résultat impeccable.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Features (Caractéristiques techniques) */}
+            <div className="mb-6 bg-card rounded-2xl border border-border p-6">
+              <h3 className="font-serif text-lg font-bold text-foreground mb-3">
+                Caractéristiques techniques
+              </h3>
               <ul className="space-y-2">
                 {product.features.map((feature, index) => (
-                  <li key={index} className="flex items-center gap-2 text-muted-foreground">
+                  <li key={index} className="flex items-center gap-2 text-muted-foreground text-sm">
                     <Check className="w-4 h-4 text-primary flex-shrink-0" />
                     <span>{feature}</span>
                   </li>
@@ -275,7 +305,7 @@ export default function ProductPage({ params }: ProductPageProps) {
           </div>
         </div>
 
-        {/* Customer Reviews */}
+        {/* Customer Reviews specifiques au produit */}
         {product.reviews && product.reviews.length > 0 && (
           <div className="mt-12 mb-12">
             <CustomerReviews reviews={product.reviews} />
@@ -403,7 +433,7 @@ export default function ProductPage({ params }: ProductPageProps) {
                 <div className="flex justify-between mb-2">
                   <span className="text-muted-foreground">Livraison</span>
                   <span className="text-foreground">
-                    {deliveryFee > 0 ? `${deliveryFee.toLocaleString('fr-FR')} FCFA` : 'Selectionnez une zone'}
+                    {deliveryFee > 0 ? ${deliveryFee.toLocaleString('fr-FR')} FCFA : 'Selectionnez une zone'}
                   </span>
                 </div>
                 <div className="border-t border-border pt-2 mt-2">
