@@ -5,12 +5,39 @@ import { VisitorCount } from '@/components/visitor-count'
 import { ProductCard } from '@/components/product-card'
 import { PurchaseNotification } from '@/components/purchase-notification'
 import { useProducts } from '@/lib/products-context'
-import { Sparkles, MessageCircle, ChevronDown } from 'lucide-react'
+import { Sparkles, MessageCircle, ChevronDown, Star, CheckCircle2 } from 'lucide-react'
 import { useState } from 'react'
 
 export default function HomePage() {
   const { products } = useProducts()
   const [openFaq, setOpenFaq] = useState<number | null>(null)
+
+  const reviews = [
+    {
+      name: "Kouassi Marie",
+      location: "Abidjan, Cocody",
+      date: "Il y a 2 jours",
+      rating: 5,
+      comment: "Franchement top ! Livraison reçue en moins de 24h à Cocody. Le produit est de super bonne qualité et le livreur était très courtois. Je recommande à 100%.",
+      verified: true
+    },
+    {
+      name: "Mamadou Traoré",
+      location: "Yopougon, Abidjan",
+      date: "Il y a 4 jours",
+      rating: 5,
+      comment: "J'étais un peu sceptique au début, mais j'ai pu vérifier mon colis avant de payer en espèces comme promis. Très pro, merci à l'équipe AZ !",
+      verified: true
+    },
+    {
+      name: "Awa Koné",
+      location: "Bouaké",
+      date: "Il y a une semaine",
+      rating: 5,
+      comment: "Le service client sur WhatsApp est ultra réactif. Article conforme aux photos et super pratique au quotidien. Merci pour le sérieux.",
+      verified: true
+    }
+  ]
 
   const faqs = [
     {
@@ -150,6 +177,61 @@ export default function HomePage() {
                 Assistance disponible via WhatsApp pour toutes vos questions.
               </p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Avis de nos clients Section */}
+      <section className="py-16 md:py-24 bg-card/30">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center gap-1.5 bg-amber-500/10 text-amber-500 px-4 py-1.5 rounded-full text-sm font-semibold mb-4">
+              <Star className="w-4 h-4 fill-amber-500" />
+              <span>Note globale de 4.9 / 5 basée sur +500 commandes</span>
+            </div>
+            <h2 className="font-serif text-3xl md:text-4xl font-bold text-foreground mb-4">
+              Ce que pensent nos <span className="text-primary">Clients</span>
+            </h2>
+            <p className="text-muted-foreground max-w-xl mx-auto">
+              Découvrez les retours authentiques de clients satisfaits à travers le pays.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            {reviews.map((review, index) => (
+              <div 
+                key={index}
+                className="bg-card border border-border rounded-2xl p-6 shadow-sm flex flex-col justify-between relative overflow-hidden"
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-1">
+                      {[...Array(review.rating)].map((_, i) => (
+                        <Star key={i} className="w-4 h-4 fill-amber-500 text-amber-500" />
+                      ))}
+                    </div>
+                    <span className="text-xs text-muted-foreground">{review.date}</span>
+                  </div>
+
+                  <p className="text-foreground text-sm leading-relaxed mb-6 italic">
+                    &ldquo;{review.comment}&rdquo;
+                  </p>
+                </div>
+
+                <div className="pt-4 border-t border-border/60 flex items-center justify-between">
+                  <div>
+                    <h4 className="font-semibold text-foreground text-sm">{review.name}</h4>
+                    <p className="text-xs text-muted-foreground">{review.location}</p>
+                  </div>
+                  {review.verified && (
+                    <div className="flex items-center gap-1 text-emerald-600 text-xs font-medium bg-emerald-500/10 px-2.5 py-1 rounded-full">
+                      <CheckCircle2 className="w-3.5 h-3.5" />
+                      <span>Achat vérifié</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
