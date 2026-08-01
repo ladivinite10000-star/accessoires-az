@@ -93,7 +93,7 @@ export default function ProductPage({ params }: ProductPageProps) {
     for (let i = 0; i < 15; i++) {
   const particle = document.createElement('div')
   particle.style.position = 'absolute'
-  particle.style.left = ${Math.random() * 100}%;
+  particle.style.left = ${Math.random()*100}%;
   particle.style.top = ${Math.random() * 50}%;
   particle.style.width = ${Math.random() * 8 + 4}px;
   particle.style.height = particle.style.width;
@@ -263,22 +263,19 @@ export default function ProductPage({ params }: ProductPageProps) {
             )}
 
             <h1 className="font-serif text-3xl md:text-4xl font-bold text-foreground mb-4">
-              {product.name}
-            </h1>
+  {product.name}
+</h1>
 
-            <div className="flex items-center gap-3 mb-6">
-              <p className="text-primary text-3xl font-extrabold">
-                {product.price.toLocaleString('fr-FR')} FCFA
-              </p>
-      {product.oldPrice && (
-  <p className="text-muted-foreground line-through text-lg font-medium">
-    {product.oldPrice.toLocaleString('fr-FR')} FCFA
+<div className="flex items-center gap-3 mb-6">
+  <p className="text-primary text-3xl font-extrabold">
+    {product.price.toLocaleString('fr-FR')} FCFA
   </p>
-)}
-
-            <p className="text-muted-foreground mb-6 leading-relaxed text-base">
-              {product.description}
-            </p>
+  {product.oldPrice && (
+    <p className="text-muted-foreground line-through text-lg font-medium">
+      {product.oldPrice.toLocaleString('fr-FR')} FCFA
+    </p>
+  )}
+</div>
 
             <div className="space-y-4 mb-6">
               <div className="bg-destructive/10 border border-destructive/20 rounded-2xl p-4">
