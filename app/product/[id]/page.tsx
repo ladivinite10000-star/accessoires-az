@@ -94,8 +94,8 @@ export default function ProductPage({ params }: ProductPageProps) {
   const particle = document.createElement('div')
   particle.style.position = 'absolute'
 particle.style.left = `${Math.random() * 100}%`;
-particle.style.top = `${Math.random() * 50}`%;
-particle.style.width = `${Math.random() * 8 + 4}`px;
+particle.style.top = `${Math.random() * 50}%`;
+particle.style.width = `${Math.random() * 8 + 4}px`;
   particle.style.height = particle.style.width;
   particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)]
   particle.style.borderRadius = '50%'
