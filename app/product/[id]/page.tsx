@@ -103,12 +103,8 @@ particle.style.width = `${Math.random() * 8 + 4}px`;
   container.appendChild(particle)
 }
         setTimeout(() => {
-          
-     particle.style.transform = translate(${ (Math.random() - 0.5) * 400 }px, ${ Math.random() * 400 + 100 }px) scale(0)`;
-        }, 20)
-
-        setTimeout(() => particle.remove(), 1000)
-      }
+            particle.style.transform = `translate(${ (Math.random() - 0.5) * 400}px, ${ Math.random() * 400 + 100}px) scale(0)`;
+      
     }, 150)
   }
 
