@@ -4,7 +4,6 @@ import { useState } from 'react'
 import { notFound } from 'next/navigation'
 import { Header } from '@/components/header'
 import { ImageCarousel } from '@/components/image-carousel'
-import { CustomerReviews } from '@/components/customer-reviews'
 import { PurchaseNotification } from '@/components/purchase-notification'
 import { useProducts } from '@/lib/products-context'
 import { Button } from '@/components/ui/button'
@@ -274,31 +273,43 @@ export default function ProductPage({ params }: ProductPageProps) {
   )}
 </div>
 
-            <div className="space-y-4 mb-6">
+            <section aria-labelledby="aida-title" className="mb-6 space-y-3">
+              <h2 id="aida-title" className="sr-only">Pourquoi choisir ce produit</h2>
               <div className="bg-destructive/10 border border-destructive/20 rounded-2xl p-4">
                 <div className="flex items-start gap-3">
                   <AlertCircle className="w-5 h-5 text-destructive flex-shrink-0 mt-0.5" />
                   <div>
-                    <h3 className="font-semibold text-foreground text-sm mb-1">Le problème du quotidien</h3>
-                    <p className="text-muted-foreground text-sm">
-                      Fatigué(e) des solutions inefficaces, des pertes de temps ou du manque de fiabilité ? Il est temps d&apos;y remédier durablement.
-                    </p>
+                    <p className="text-xs font-bold uppercase tracking-wider text-destructive mb-1">Attention — le problème</p>
+                    <h3 className="font-semibold text-foreground text-sm mb-1">Vous perdez du temps et de la sérénité</h3>
+                    <p className="text-muted-foreground text-sm leading-relaxed">Les solutions classiques sont souvent encombrantes, peu fiables ou difficiles à utiliser au quotidien.</p>
                   </div>
                 </div>
               </div>
-
               <div className="bg-primary/10 border border-primary/20 rounded-2xl p-4">
                 <div className="flex items-start gap-3">
                   <Sparkles className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
                   <div>
-                    <h3 className="font-semibold text-foreground text-sm mb-1">Notre solution idéale</h3>
-                    <p className="text-muted-foreground text-sm">
-                      {product.name} a été spécialement conçu pour vous simplifier la vie, vous garantir un confort maximal et un résultat impeccable.
-                    </p>
+                    <p className="text-xs font-bold uppercase tracking-wider text-primary mb-1">Intérêt — la solution</p>
+                    <h3 className="font-semibold text-foreground text-sm mb-1">Retrouvez une solution simple et fiable</h3>
+                    <p className="text-muted-foreground text-sm leading-relaxed">{product.name} vous aide à résoudre ce problème rapidement grâce à une utilisation intuitive et un format pensé pour votre quotidien.</p>
                   </div>
                 </div>
               </div>
-            </div>
+              <div className="bg-secondary/60 border border-border rounded-2xl p-4">
+                <div className="flex items-start gap-3">
+                  <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-xs font-bold uppercase tracking-wider text-primary mb-1">Désir — les bénéfices</p>
+                    <h3 className="font-semibold text-foreground text-sm mb-1">Une expérience conçue pour durer</h3>
+                    <p className="text-muted-foreground text-sm leading-relaxed">Gagnez en confort, en tranquillité et en efficacité dès la première utilisation.</p>
+                  </div>
+                </div>
+              </div>
+              <div className="bg-card border border-border rounded-2xl p-4">
+                <p className="text-xs font-bold uppercase tracking-wider text-primary mb-1">Action — passez commande</p>
+                <p className="font-semibold text-foreground text-sm">Commandez maintenant et payez uniquement à la livraison.</p>
+              </div>
+            </section>
 
             <div className="mb-6 bg-card rounded-2xl border border-border p-6 shadow-sm">
               <h3 className="font-serif text-lg font-bold text-foreground mb-3">
@@ -475,11 +486,6 @@ export default function ProductPage({ params }: ProductPageProps) {
           </div>
         </div>
 
-        {product.reviews && product.reviews.length > 0 && (
-          <section aria-labelledby="customer-reviews-title" className="max-w-4xl mx-auto mt-16 mb-8">
-            <CustomerReviews reviews={product.reviews} />
-          </section>
-        )}
       </main>
 
       {/* Sticky CTA Mobile Bar */}

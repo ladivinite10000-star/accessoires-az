@@ -27,14 +27,10 @@ export function ProductCard({ product }: ProductCardProps) {
             className="object-cover transition-transform duration-500 group-hover:scale-110"
           />
           
-          {/* Hover Overlay */}
-          <div 
-            className={`absolute inset-0 bg-black/60 flex items-center justify-center transition-opacity duration-300 ${
-              isHovered ? 'opacity-100' : 'opacity-0'
-            }`}
-          >
-            <span className="bg-primary text-primary-foreground px-6 py-3 rounded-full font-semibold transform transition-transform duration-300 hover:scale-105">
-              Voir l&apos;article
+          {/* Détails toujours visibles, avec un renforcement au survol */}
+          <div className="absolute inset-x-0 bottom-0 flex items-center justify-center bg-gradient-to-t from-black/70 to-transparent px-4 pb-4 pt-10">
+            <span className={`bg-primary text-primary-foreground px-5 py-2.5 rounded-full font-semibold shadow-lg transition-transform duration-300 ${isHovered ? 'scale-105' : ''}`}>
+              Voir les détails de l&apos;article
             </span>
           </div>
 
