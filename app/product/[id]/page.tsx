@@ -279,7 +279,6 @@ export default function ProductPage({ params }: ProductPageProps) {
                 <div className="flex items-start gap-3">
                   <AlertCircle className="w-5 h-5 text-destructive flex-shrink-0 mt-0.5" />
                   <div>
-                    <p className="text-xs font-bold uppercase tracking-wider text-destructive mb-1">Attention — le problème</p>
                     <h3 className="font-semibold text-foreground text-sm mb-1">Vous perdez du temps et de la sérénité</h3>
                     <p className="text-muted-foreground text-sm leading-relaxed">Les solutions classiques sont souvent encombrantes, peu fiables ou difficiles à utiliser au quotidien.</p>
                   </div>
@@ -289,7 +288,6 @@ export default function ProductPage({ params }: ProductPageProps) {
                 <div className="flex items-start gap-3">
                   <Sparkles className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
                   <div>
-                    <p className="text-xs font-bold uppercase tracking-wider text-primary mb-1">Intérêt — la solution</p>
                     <h3 className="font-semibold text-foreground text-sm mb-1">Retrouvez une solution simple et fiable</h3>
                     <p className="text-muted-foreground text-sm leading-relaxed">{product.name} vous aide à résoudre ce problème rapidement grâce à une utilisation intuitive et un format pensé pour votre quotidien.</p>
                   </div>
@@ -299,14 +297,12 @@ export default function ProductPage({ params }: ProductPageProps) {
                 <div className="flex items-start gap-3">
                   <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
                   <div>
-                    <p className="text-xs font-bold uppercase tracking-wider text-primary mb-1">Désir — les bénéfices</p>
                     <h3 className="font-semibold text-foreground text-sm mb-1">Une expérience conçue pour durer</h3>
                     <p className="text-muted-foreground text-sm leading-relaxed">Gagnez en confort, en tranquillité et en efficacité dès la première utilisation.</p>
                   </div>
                 </div>
               </div>
               <div className="bg-card border border-border rounded-2xl p-4">
-                <p className="text-xs font-bold uppercase tracking-wider text-primary mb-1">Action — passez commande</p>
                 <p className="font-semibold text-foreground text-sm">Commandez maintenant et payez uniquement à la livraison.</p>
               </div>
             </section>

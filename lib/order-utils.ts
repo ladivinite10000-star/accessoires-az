@@ -66,43 +66,47 @@ export function generateWhatsAppLink(order: OrderData): string {
   return `https://wa.me/${phoneNumber}?text=${message}`
 }
 
-// Telecharger le recu en texte
+// Télécharger un reçu HTML lisible, avec les montants mis en évidence
 export function downloadReceipt(order: OrderData): void {
-  const line = "========================="
-  let receipt = `RECU DE COMMANDE\n${line}\n\n`
-  receipt += `Numero: ${order.orderId}\n`
-  receipt += `Date: ${order.date}\n\n`
-  receipt += `Client: ${order.name}\n`
-  receipt += `Telephone: ${order.phone}\n`
-  if (order.phoneSecondary) {
-    receipt += `Tel. secondaire: ${order.phoneSecondary}\n`
-  }
-  receipt += `Zone: ${order.deliveryZone}\n\n`
-  receipt += `${line}\nARTICLES\n${line}\n\n`
-  
-  order.items.forEach((item) => {
-    receipt += `${item.name}\n`
-    receipt += `  Quantite: ${item.quantity}\n`
-    receipt += `  Prix unitaire: ${formatPrice(item.price)}\n`
-    receipt += `  Total: ${formatPrice(item.price * item.quantity)}\n\n`
-  })
-  
-  receipt += `${line}\n`
-  receipt += `Sous-total: ${formatPrice(order.subtotal)}\n`
-  receipt += `Livraison: ${formatPrice(order.deliveryFee)}\n`
-  receipt += `TOTAL: ${formatPrice(order.total)}\n`
-  receipt += `${line}\n\n`
-  receipt += `Mode de paiement: ${order.paymentMethod}\n\n`
-  receipt += `Merci pour votre commande !\n`
-  receipt += `L'Art des Accessoires AZ`
-  
-  const blob = new Blob([receipt], { type: 'text/plain' })
+  const escapeHtml = (value: string | number) => String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;')
+
+  const itemsHtml = order.items.map((item) => `
+    <tr>
+      <td>${escapeHtml(item.name)}</td>
+      <td>${item.quantity}</td>
+      <td>${formatPrice(item.price)}</td>
+      <td class="amount">${formatPrice(item.price * item.quantity)}</td>
+    </tr>`).join('')
+
+  const receipt = `<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><title>Reçu ${escapeHtml(order.orderId)}</title>
+<style>
+body{font-family:Arial,sans-serif;color:#172033;max-width:760px;margin:0 auto;padding:32px;line-height:1.5}
+h1{font-size:28px;margin:0 0 4px}h2{font-size:18px;margin-top:28px;border-bottom:2px solid #172033;padding-bottom:8px}
+.meta{color:#4b5563;margin-bottom:24px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px 24px;margin:16px 0 24px}
+strong{color:#172033}table{width:100%;border-collapse:collapse;margin-top:12px}th,td{text-align:left;padding:12px 8px;border-bottom:1px solid #d1d5db}th{background:#eef2f7}.amount{font-weight:700;white-space:nowrap}
+.totals{margin:24px 0 0 auto;max-width:360px}.total{font-size:22px;font-weight:800;color:#0b6b52;border-top:2px solid #172033;padding-top:12px}
+@media print{body{padding:0}.no-print{display:none}}
+</style></head><body>
+<h1>Reçu officiel de commande</h1><div class="meta">Accessoires AZ · ${escapeHtml(order.date)}</div>
+<div class="grid"><div><strong>Numéro :</strong> ${escapeHtml(order.orderId)}</div><div><strong>Client :</strong> ${escapeHtml(order.name)}</div><div><strong>Téléphone :</strong> ${escapeHtml(order.phone)}</div>${order.phoneSecondary ? `<div><strong>Téléphone secondaire :</strong> ${escapeHtml(order.phoneSecondary)}</div>` : ''}<div><strong>Zone :</strong> ${escapeHtml(order.deliveryZone)}</div></div>
+<h2>Articles commandés</h2><table><thead><tr><th>Article</th><th>Qté</th><th>Prix unitaire</th><th>Total</th></tr></thead><tbody>${itemsHtml}</tbody></table>
+<div class="totals"><div>Sous-total : <strong>${formatPrice(order.subtotal)}</strong></div><div>Livraison : <strong>${formatPrice(order.deliveryFee)}</strong></div><div class="total">TOTAL À PAYER : ${formatPrice(order.total)}</div></div>
+<h2>Paiement</h2><p>${escapeHtml(order.paymentMethod)}</p><p>Merci pour votre commande !<br><strong>L'Art des Accessoires AZ</strong></p>
+</body></html>`
+
+  const blob = new Blob([receipt], { type: 'text/html;charset=utf-8' })
   const url = URL.createObjectURL(blob)
-  const a = document.createElement('a')
-  a.href = url
-  a.download = `recu-${order.orderId}.txt`
-  document.body.appendChild(a)
-  a.click()
-  document.body.removeChild(a)
+  const link = document.createElement('a')
+  link.href = url
+  link.download = `recu-${order.orderId}.html`
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
   URL.revokeObjectURL(url)
 }
