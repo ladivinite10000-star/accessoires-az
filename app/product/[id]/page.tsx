@@ -90,22 +90,23 @@ export default function ProductPage({ params }: ProductPageProps) {
         return
       }
 
-    for (let i = 0; i < 15; i++) {
-  const particle = document.createElement('div')
-  particle.style.position = 'absolute'
-particle.style.left = `${Math.random() * 100}%`;
-particle.style.top = `${Math.random() * 50}%`;
-particle.style.width = `${Math.random() * 8 + 4}px`;
-  particle.style.height = particle.style.width;
-  particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)]
-  particle.style.borderRadius = '50%'
-  particle.style.transition = 'all 1s ease-out'
-  container.appendChild(particle)
-}
+      for (let i = 0; i < 15; i++) {
+        const particle = document.createElement('div')
+        particle.style.position = 'absolute'
+        particle.style.left = `${Math.random() * 100}%`
+        particle.style.top = `${Math.random() * 50}%`
+        particle.style.width = `${Math.random() * 8 + 4}px`
+        particle.style.height = particle.style.width
+        particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)]
+        particle.style.borderRadius = '50%'
+        particle.style.transition = 'all 1s ease-out'
+        container.appendChild(particle)
+
         setTimeout(() => {
-            particle.style.transform = `translate(${ (Math.random() - 0.5) * 400}px, ${ Math.random() * 400 + 100}px) scale(0)`;
-      
-    }, 150)
+          particle.style.transform = `translate(${(Math.random() - 0.5) * 400}px, ${Math.random() * 400 + 100}px) scale(0)`
+        }, 150)
+      }
+    }, 300)
   }
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -460,7 +461,7 @@ particle.style.width = `${Math.random() * 8 + 4}px`;
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Frais de livraison</span>
                   <span className="text-foreground font-semibold">
-                    {deliveryFee > 0 ? ${deliveryFee.toLocaleString('fr-FR')} FCFA : 'À sélectionner'}
+                    {deliveryFee > 0 ? `${deliveryFee.toLocaleString('fr-FR')} FCFA` : 'À sélectionner'}
                   </span>
                 </div>
                 <div className="border-t border-border pt-2 mt-1 flex justify-between items-center">
