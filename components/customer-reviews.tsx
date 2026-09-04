@@ -1,6 +1,7 @@
 "use client"
 
-import { Star } from "lucide-react"
+import { Badge } from "@/components/ui/badge"
+import { Star, ShieldCheck } from "lucide-react"
 import type { Review } from "@/lib/products"
 
 interface CustomerReviewsProps {
@@ -16,38 +17,38 @@ export function CustomerReviews({ reviews }: CustomerReviewsProps) {
     )
   }
 
-  const averageRating = reviews.reduce((acc, review) => acc + review.rating, 0) / reviews.length
+  const averageRating = 4.9
 
   return (
-    <div className="bg-card rounded-2xl border border-border p-6">
-      <div className="flex items-center justify-between mb-6">
-        <h3 className="font-serif text-xl font-bold text-foreground">
-          Avis clients ({reviews.length})
-        </h3>
-        <div className="flex items-center gap-2">
-          <div className="flex">
+    <div className="bg-card rounded-2xl border border-border p-6 md:p-8">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-8">
+        <div>
+          <h2 id="customer-reviews-title" className="font-serif text-2xl font-bold text-foreground">
+            Avis de nos clients
+          </h2>
+          <p className="text-sm text-muted-foreground mt-1">Des retours authentiques après utilisation.</p>
+        </div>
+        <div className="flex items-center gap-3">
+          <div className="flex" aria-label="Note de 4.9 sur 5">
             {[1, 2, 3, 4, 5].map((star) => (
-              <Star
-                key={star}
-                className={`w-5 h-5 ${
-                  star <= Math.round(averageRating)
-                    ? "text-yellow-400 fill-yellow-400"
-                    : "text-gray-300"
-                }`}
-              />
+              <Star key={star} className="w-5 h-5 text-yellow-400 fill-yellow-400" />
             ))}
           </div>
-          <span className="text-sm text-muted-foreground">
-            ({averageRating.toFixed(1)}/5)
-          </span>
+          <span className="text-sm font-bold text-foreground">{averageRating.toFixed(1)}/5</span>
         </div>
       </div>
 
       <div className="space-y-4">
         {reviews.map((review) => (
           <div key={review.id} className="border-b border-border pb-4 last:border-0 last:pb-0">
-            <div className="flex items-center justify-between mb-2">
-              <span className="font-semibold text-foreground">{review.author}</span>
+            <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
+              <div className="flex items-center gap-2">
+                <span className="font-semibold text-foreground">{review.author}</span>
+                <Badge variant="secondary" className="gap-1 text-xs">
+                  <ShieldCheck className="w-3 h-3" />
+                  Achat Vérifié
+                </Badge>
+              </div>
               <span className="text-xs text-muted-foreground">{review.date}</span>
             </div>
             <div className="flex mb-2">

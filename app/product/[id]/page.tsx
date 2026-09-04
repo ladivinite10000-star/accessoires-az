@@ -305,7 +305,7 @@ export default function ProductPage({ params }: ProductPageProps) {
                 Caractéristiques techniques
               </h3>
               <ul className="space-y-2">
-                {product.features.map((feature, index) => (
+                {(product.technicalSpecs || product.features).map((feature, index) => (
                   <li key={index} className="flex items-center gap-2 text-muted-foreground text-sm">
                     <Check className="w-4 h-4 text-primary flex-shrink-0" />
                     <span>{feature}</span>
@@ -341,12 +341,6 @@ export default function ProductPage({ params }: ProductPageProps) {
             </div>
           </div>
         </div>
-
-        {product.reviews && product.reviews.length > 0 && (
-          <div className="mt-12 mb-12">
-            <CustomerReviews reviews={product.reviews} />
-          </div>
-        )}
 
         <div id="order-form-section" className="max-w-2xl mx-auto pt-6">
           <div className="bg-card rounded-3xl border border-border p-6 md:p-8 shadow-xl">
@@ -480,6 +474,12 @@ export default function ProductPage({ params }: ProductPageProps) {
             </form>
           </div>
         </div>
+
+        {product.reviews && product.reviews.length > 0 && (
+          <section aria-labelledby="customer-reviews-title" className="max-w-4xl mx-auto mt-16 mb-8">
+            <CustomerReviews reviews={product.reviews} />
+          </section>
+        )}
       </main>
 
       {/* Sticky CTA Mobile Bar */}

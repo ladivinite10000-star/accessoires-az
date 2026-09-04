@@ -15,6 +15,7 @@ export interface Product {
   images: string[]
   stock: number
   features: string[]
+  technicalSpecs?: string[]
   category?: string
   story?: string
   reviews: Review[]
@@ -39,6 +40,12 @@ export const products: Product[] = [
       "Localisation GPS via application mobile",
       "Batterie longue duree (pile incluse)",
       "Design ultra-leger et discret"
+    ],
+    technicalSpecs: [
+      "Autonomie : jusqu'à 12 mois (pile incluse)",
+      "Matériaux : ABS résistant et anneau en acier",
+      "Dimensions : 38 × 38 × 7 mm",
+      "Connexion : Bluetooth basse consommation"
     ],
     reviews: [
       {
@@ -75,6 +82,12 @@ export const products: Product[] = [
       "Compteur digital integre (calories, sauts, temps)",
       "Poignees ergonomiques antiderapantes",
       "Livre avec sa pochette de transport"
+    ],
+    technicalSpecs: [
+      "Autonomie : jusqu'à 30 heures d'entraînement",
+      "Matériaux : poignées en ABS et câble en acier tressé",
+      "Dimensions : poignées de 16 cm, câble réglable",
+      "Poids : 620 g avec les deux balles lestées"
     ],
     reviews: [
       {
